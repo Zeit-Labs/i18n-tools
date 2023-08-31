@@ -174,9 +174,12 @@ class Extract(Runner):
         files_to_clean.update(('django-partial', 'djangojs-partial'))
 
         # Finish each file.
+        print("=================================================================================================")
+        print("files_to_clean", files_to_clean)
         for filename in files_to_clean:
-            clean_pofile(self.source_msgs_dir.joinpath(filename))
-
+            x = self.source_msgs_dir.joinpath(filename)
+            print("x", x)
+            clean_pofile(x)
         # Restore the saved .po files.
         self.rename_source_file('django-saved.po', 'django.po')
         self.rename_source_file('djangojs-saved.po', 'djangojs.po')
@@ -187,7 +190,9 @@ def clean_pofile(path_name):
     Perform header fix, metadata fix, and key string removal on a single pofile
     """
     if not file_exists(path_name):
+        print("File does not exist: {}".format(path_name))
         return
+    print('Cleaning %s', os.path.basename(path_name))
     LOG.info('Cleaning %s', os.path.basename(path_name))
     profile = polib.pofile(path_name)
     # replace default headers with edX headers
@@ -251,7 +256,7 @@ def fix_metadata(pofile):
     #   u'POT-Creation-Date': u'2013-04-25 14:14-0400',
     #   u'Content-Type': u'text/plain; charset=UTF-8',
     #   u'MIME-Version': u'1.0'}
-
+    print("pofile.metadata - BEFORE", pofile.metadata)
     fixes = {
         'Report-Msgid-Bugs-To': 'openedx-translation@googlegroups.com',
         'Project-Id-Version': '0.1a',
@@ -263,6 +268,7 @@ def fix_metadata(pofile):
     pofile.metadata.pop('POT-Creation-Date', None)
     pofile.metadata.pop('PO-Revision-Date', None)
     pofile.metadata.update(fixes)
+    print("pofile.metadata - AFTER", pofile.metadata)
 
 
 def strip_key_strings(pofile):
