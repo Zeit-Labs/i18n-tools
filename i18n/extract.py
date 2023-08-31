@@ -171,7 +171,7 @@ class Extract(Runner):
         files_to_clean.update(segmented_files)
 
         # Add partial files to the list of files to clean.
-        files_to_clean.update(('django_partial', 'djangojs_partial'))
+        files_to_clean.update(('django-partial', 'djangojs-partial'))
 
         # Finish each file.
         for filename in files_to_clean:
